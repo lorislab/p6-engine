@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_10npwnx" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.42.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <bpmn:process id="Job1" name="300_job_1" isExecutable="true">
+    <bpmn:extensionElements>
+      <zeebe:versionTag value="1.2.3" />
+    </bpmn:extensionElements>
+    <bpmn:startEvent id="StartEvent_1" name="StartJob1">
+      <bpmn:outgoing>Flow_0k0uefz</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0k0uefz" sourceRef="StartEvent_1" targetRef="Activity_0lfu33z" />
+    <bpmn:endEvent id="Event_0vn105g" name="EndJob1">
+      <bpmn:incoming>Flow_0jxqhjv</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0jxqhjv" sourceRef="Activity_0lfu33z" targetRef="Event_0vn105g" />
+    <bpmn:serviceTask id="Activity_0lfu33z" name="Job1">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="300_job_1" retries="3" />
+        <zeebe:taskHeaders>
+          <zeebe:header key="customHeader1" value="customValue1" />
+          <zeebe:header key="customHeader2" value="customValue2" />
+        </zeebe:taskHeaders>
+        <zeebe:ioMapping>
+          <zeebe:input source="=name" target="input1" />
+          <zeebe:input source="=name" target="input2" />
+          <zeebe:output source="=name" target="output1" />
+          <zeebe:output source="=name" target="output2" />
+        </zeebe:ioMapping>
+        <zeebe:properties>
+          <zeebe:property name="extProperty1" value="value1" />
+          <zeebe:property name="camundaModeler:exampleOutputJson" value="{&#34;a&#34;:11}" />
+        </zeebe:properties>
+        <zeebe:executionListeners>
+          <zeebe:executionListener eventType="start" retries="2" type="listenerStartType" />
+          <zeebe:executionListener eventType="end" retries="3" type="listenerEnd" />
+        </zeebe:executionListeners>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0k0uefz</bpmn:incoming>
+      <bpmn:outgoing>Flow_0jxqhjv</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Job1">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="182" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="176" y="145" width="48" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0vn105g_di" bpmnElement="Event_0vn105g">
+        <dc:Bounds x="422" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="418" y="145" width="44" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ky34yr_di" bpmnElement="Activity_0lfu33z">
+        <dc:Bounds x="270" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0k0uefz_di" bpmnElement="Flow_0k0uefz">
+        <di:waypoint x="218" y="120" />
+        <di:waypoint x="270" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0jxqhjv_di" bpmnElement="Flow_0jxqhjv">
+        <di:waypoint x="370" y="120" />
+        <di:waypoint x="422" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

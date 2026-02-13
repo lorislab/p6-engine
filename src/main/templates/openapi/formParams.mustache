@@ -1,0 +1,1 @@
+{{#isFormParam}}{{^isFile}}@NotNull @org.jboss.resteasy.reactive.RestForm(value = "{{baseName}}")  {{{dataType}}} {{paramName}}{{/isFile}}{{#isFile}} @NotEmpty @org.jboss.resteasy.reactive.RestForm(org.jboss.resteasy.reactive.multipart.FileUpload.ALL) List<org.jboss.resteasy.reactive.multipart.FileUpload> {{paramName}}{{/isFile}}{{/isFormParam}}

@@ -1,0 +1,728 @@
+---
+openapi: 3.0.3
+info:
+  title: p6-engine
+  description: P6 engine rest api
+  version: '1.0'
+servers:
+  - url: http://p6-engine:8080/
+tags:
+  - name: Resource
+  - name: ProcessInstance
+  - name: ProcessDefinition
+  - name: Job
+paths:
+  /v1/job/search:
+    post:
+      tags:
+        - Job
+      operationId: searchJobs
+      description: search for jobs based on given criteria.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchJobRequest'
+      responses:
+        200:
+          description: The job search result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchJobResponse'
+        400:
+          description: Provided resource data are not valid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        404:
+          description: No process definition found
+  /v1/job:
+    post:
+      tags:
+        - Job
+      operationId: activateJob
+      description: streams them back to the client list of activated jobs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivateJobRequest'
+      responses:
+        200:
+          description: The job was completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivateJobResponse'
+        400:
+          description: Provided resource data are not valid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        404:
+          description: No process definition found
+  /v1/job/{id}/fail:
+    post:
+      tags:
+        - Job
+      operationId: failJob
+      description: The job is failed.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FailJobRequest'
+      responses:
+        204:
+          description: The job is failed.
+        400:
+          description: Provided resource data are not valid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        404:
+          description: No process definition found
+  /v1/job/{id}/error:
+    post:
+      tags:
+        - Job
+      operationId: errorJob
+      description: reports a business error (i.e. non-technical) that occurs while processing a job
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorJobRequest'
+      responses:
+        204:
+          description: An error is thrown for the job.
+        400:
+          description: Provided resource data are not valid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        404:
+          description: No process definition found
+  /v1/job/{id}/complete:
+    post:
+      tags:
+        - Job
+      operationId: completeJob
+      description: Completes a job with the given payload, which allows completing the associated service task.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompleteJobRequest'
+      responses:
+        204:
+          description: The job was completed successfully.
+        400:
+          description: Provided resource data are not valid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        404:
+          description: No process definition found
+  /v1/processDefinition/{id}:
+    get:
+      tags:
+        - ProcessDefinition
+      operationId: getProcessDefinition
+      description: Returns process definition
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Process definition data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessDefinition'
+        404:
+          description: No process definition foud
+  /v1/processDefinition/{id}/xml:
+    get:
+      tags:
+        - ProcessDefinition
+      operationId: getProcessDefinitionXml
+      description: Returns process definition XML content
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Process definition XML content
+          content:
+            text/xml:
+              schema:
+                type: string
+        404:
+          description: No process definition foud
+  /v1/processInstances:
+    post:
+      tags:
+        - ProcessInstance
+      operationId: createProcessInstance
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProcessInstanceRequest'
+      responses:
+        200:
+          description: Response information of the created process instance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateProcessInstanceResponse'
+        400:
+          description: Provided resource data are not valid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /v1/processInstances/{id}:
+    get:
+      tags:
+        - ProcessInstance
+      operationId: getProcessInstance
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Process instance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessInstance'
+        404:
+          description: Process instance not found
+  /v1/resource/{id}:
+    get:
+      tags:
+        - Resource
+      description: Get resource
+      operationId: getResource
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Response information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+  /v1/resource/{id}/xml:
+    get:
+      tags:
+        - Resource
+      description: Get resource XML content
+      operationId: getResourceXml
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Resource XML content
+          content:
+            text/xml:
+              schema:
+                type: string
+  /v1/resource/deployments:
+    post:
+      tags:
+        - Resource
+      description: Deployment resource
+      operationId: deployResource
+      summary: Deploy resources
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DeploymentRequest'
+      responses:
+        200:
+          description: Deployment resource result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentResponse'
+        400:
+          description: Provided resource data are not valid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+components:
+  schemas:
+    SearchJobResponse:
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/Page'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Job'
+    Job:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        worker:
+          type: string
+        status:
+          $ref: '#/components/schemas/JobStatus'
+        retryCount:
+          type: integer
+          format: int32
+        variables:
+          type: object
+          additionalProperties: true
+        createdAt:
+          $ref: '#/components/schemas/OffsetDateTime'
+        updatedAt:
+          $ref: '#/components/schemas/OffsetDateTime'
+        lockTo:
+          $ref: '#/components/schemas/OffsetDateTime'
+    JobStatus:
+      type: string
+      enum: [ PENDING, IN_PROGRESS, DONE ]
+    Page:
+      type: object
+      properties:
+        totalElements:
+          type: integer
+          format: int64
+          description: the total number of elements across all pages of query results
+        totalPages:
+          type: integer
+          format: int64
+          description: the total number of pages of query results
+        hasTotals:
+          type: boolean
+          description: true if totals are available
+        numberOfElements:
+          type: integer
+          format: int32
+          description: the number of elements on this Page
+        hasNext:
+          type: boolean
+          description: true if it is known that there are more results or that it is necessary to request a next page to determine whether there are more results
+        hasPrevious:
+          type: boolean
+          description: Returns true if it is known that there are previous results or that it is necessary to request the previous page to determine whether there are previous results
+    SearchJobRequest:
+      type: object
+      required:
+        - criteria
+        - page
+      properties:
+        criteria:
+          $ref: '#/components/schemas/SearchJobCriteria'
+        page:
+          $ref: '#/components/schemas/SearchPage'
+    SearchJobCriteria:
+      type: object
+      properties:
+        type:
+          type: string
+        worker:
+          type: string
+        status:
+          $ref: '#/components/schemas/JobStatus'
+    SearchPage:
+      type: object
+      required:
+        - from
+        - size
+      properties:
+        from:
+          type: integer
+          format: int32
+          default: 1
+          description: The index of items to start searching from.
+        limit:
+          type: integer
+          format: int32
+          default: 100
+          description: The maximum number of items to return in one request.
+    ActivateJobResponse:
+      type: object
+      required:
+        - jobs
+      properties:
+        jobs:
+          description: The activated jobs.
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivateJobItem'
+    ActivateJobItem:
+      type: object
+      required:
+        - id
+        - lockKey
+      properties:
+        lockKey:
+          type: string
+        id:
+          type: string
+          description: the id, a unique identifier for the job
+        type:
+          type: string
+          description: the type of the job (should match what was requested)
+        processDefinitionId:
+          type: string
+          description: the id of the job process definition
+        processDefinitionVersion:
+          type: integer
+          format: int32
+          description: the version of the job process definition
+          nullable: false
+        processInstanceId:
+          type: string
+          description: the job's process instance
+        processId:
+          type: string
+          description: the bpmn process ID of the job process definition
+        processVersion:
+          type: string
+          description: the bpmn process version of the job process definition
+        elementId:
+          type: string
+          description: the associated task element ID
+        customHeaders:
+          type: object
+          additionalProperties:
+            type: string
+          description: a set of custom headers defined during modelling; returned as a serialized JSON document
+        worker:
+          type: string
+          description: the name of the worker which activated this job
+        retries:
+          type: integer
+          format: int32
+          description: the amount of retries left to this job (should always be positive)
+          nullable: false
+        deadline:
+          $ref: '#/components/schemas/OffsetDateTime'
+        variables:
+          type: object
+          additionalProperties: true
+          description: JSON document, computed at activation time, consisting of all visible variables to the task scope
+    ActivateJobRequest:
+      type: object
+      required:
+        - type
+        - timeout
+        - maxJobsToActivate
+      properties:
+        type:
+          type: string
+          description: the job type, as defined in the BPMN process
+        worker:
+          type: string
+          description: the name of the worker activating the jobs (optional)
+        timeout:
+          type: integer
+          format: int64
+          description: a job returned after this call will not be activated by another call until the timeout (in ms) has been reached
+        maxJobsToActivate:
+          type: integer
+          format: int32
+          description: the maximum jobs to activate by this request
+        requestTimeout:
+          type: integer
+          format: int64
+          description: the request will be completed when at least one job is activated or after the requestTimeout (in ms).
+          default: 0
+        fetchVariable:
+          type: array
+          items:
+            type: string
+          description: a list of variables to fetch as the job variables; if empty, all visible variables
+    ErrorJobRequest:
+      type: object
+      required:
+        - lockKey
+      properties:
+        lockKey:
+          type: string
+        errorCode:
+          type: string
+          description: the error code that will be matched with an error catch event
+        errorMessage:
+          type: string
+          description: an optional error message that provides additional context
+        variables:
+          type: object
+          additionalProperties: true
+          description: JSON document that will instantiate the variables at the local scope of the job's associated task
+    FailJobRequest:
+      type: object
+      required:
+        - lockKey
+      properties:
+        lockKey:
+          type: string
+        retries:
+          type: integer
+          format: int32
+          description: the amount of retries the job should have left
+        errorMessage:
+          type: string
+          description: an optional message describing why the job failed
+        retryBackOff:
+          type: integer
+          format: int64
+          description: the backoff timeout (in ms) for the next retry
+        variables:
+          type: object
+          additionalProperties: true
+          description: JSON document that will instantiate the variables at the local scope of the job's associated task
+    CompleteJobRequest:
+      type: object
+      required:
+        - lockKey
+      properties:
+        lockKey:
+          type: string
+        variables:
+          type: object
+          additionalProperties: true
+          description: a JSON document representing the variables in the current task scope
+    ProcessInstance:
+      type: object
+      properties:
+        id:
+          type: string
+        processDefinitionId:
+          type: string
+        status:
+          $ref: '#/components/schemas/ProcessInstanceStatus'
+        variables:
+          type: object
+          additionalProperties: true
+        createdAt:
+          $ref: '#/components/schemas/OffsetDateTime'
+        updatedAt:
+          $ref: '#/components/schemas/OffsetDateTime'
+    ProcessInstanceStatus:
+      type: string
+      enum: [ CREATED,ACTIVE,COMPLETED,CANCELED,INCIDENT ]
+    Resource:
+      type: object
+      properties:
+        id:
+          type: string
+        deploymentRequestId:
+          type: string
+        filename:
+          type: string
+        checksum:
+          type: integer
+          format: int64
+        version:
+          type: integer
+          format: int32
+    ProcessDefinition:
+      type: object
+      properties:
+        id:
+          type: string
+        resourceId:
+          type: string
+        processName:
+          type: string
+        processId:
+          type: string
+        processVersion:
+          type: string
+        createdAt:
+          $ref: '#/components/schemas/OffsetDateTime'
+        updatedAt:
+          $ref: '#/components/schemas/OffsetDateTime'
+    CreateProcessInstanceRequest:
+      type: object
+      properties:
+        processId:
+          type: string
+        processVersion:
+          type: string
+        variables:
+          type: object
+          additionalProperties: true
+    CreateProcessInstanceResponse:
+      type: object
+      properties:
+        processInstanceId:
+          type: string
+        processId:
+          type: string
+        processVersion:
+          type: string
+    DeploymentRequest:
+      type: object
+      required:
+        - resources
+      properties:
+        resources:
+          type: array
+          description: The binary data to create the deployment resources.
+          minItems: 1
+          items:
+            type: string
+            format: binary
+    DeploymentResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        deployments:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeploymentResult'
+    DeploymentResult:
+      type: object
+      properties:
+        processDefinition:
+          $ref: '#/components/schemas/DeploymentProcessDefinitionResult'
+        resource:
+          $ref: '#/components/schemas/DeploymentResourceResult'
+    DeploymentProcessDefinitionResult:
+      type: object
+      properties:
+        id:
+          type: string
+        processName:
+          type: string
+        processId:
+          type: string
+        processVersion:
+          type: string
+        version:
+          type: integer
+          format: int32
+    DeploymentResourceResult:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        version:
+          type: integer
+          format: int32
+    ProblemDetails:
+      type: object
+      description: Problem Details is an error details in a structure.
+      required:
+        - detail
+      properties:
+        type:
+            type: string
+            format: uri
+            description: A URI reference that identifies the problem type.
+            maxLength: 1024
+        status:
+            type: integer
+            format: int32
+            description: The HTTP status code generated by the origin server for this occurrence of the problem.
+            minimum: 100
+            maximum: 599
+        title:
+            type: string
+            description: A short, human-readable summary of the problem type. It should not change from occurrence to occurrence of the problem, except for purposes of localization.
+            maxLength: 1024
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem.
+          maxLength: 4096
+        instance:
+          type: string
+          description: A URI reference that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
+          maxLength: 1024
+        code:
+          type: string
+          description: An API specific error code aiding the provider team understand the error based on their own potential taxonomy or registry.
+          maxLength: 32
+        errors:
+          type: array
+          description: An array of error details to accompany a problem details response.
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/ProblemDetailError'
+    ProblemDetailError:
+      type: object
+      description: Problem detail error item
+      required:
+        - detail
+      properties:
+        name:
+          type: string
+          description: A human-readable name of this error.
+          maxLength: 32
+        code:
+          type: string
+          description: A string containing additional provider specific codes to identify the error context.
+          maxLength: 32
+        detail:
+          type: string
+          description: A granular description on the specific error related to a body property, query parameter, path parameters, and/or header.
+          maxLength: 4096
+    OffsetDateTime:
+      format: date-time
+      type: string
+      example: 2022-03-10T12:15:50-04:00

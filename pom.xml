@@ -1,0 +1,181 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.lorislab.ms</groupId>
+        <artifactId>lorislab-ms-parent</artifactId>
+        <version>0.1.0</version>
+    </parent>
+
+    <artifactId>p6-engine</artifactId>
+    <packaging>quarkus</packaging>
+
+    <organization>
+        <name>lorislab</name>
+        <url>https://www.lorislab.org</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <id>andrejpetras</id>
+            <name>Andrej Petras</name>
+            <organization>lorislab</organization>
+            <organizationUrl>https://www.lorislab.org</organizationUrl>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <properties>
+        <p6.bpmn2.model.version>0.0.0</p6.bpmn2.model.version>
+    </properties>
+
+    <dependencies>
+
+        <!-- LORISLAB -->
+        <dependency>
+            <groupId>org.lorislab.p6</groupId>
+            <artifactId>p6-bpmn2-model</artifactId>
+            <version>${p6.bpmn2.model.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.lorislab.lib</groupId>
+            <artifactId>lorislab-sql-data</artifactId>
+        </dependency>
+
+        <!-- QUARKUS -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-rest</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-jackson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-rest-jackson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-qute</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-reactive-pg-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-jdbc-postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-flyway</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-flyway-postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-cache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-openapi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-health</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-hibernate-validator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                        <arg>-Amapstruct.defaultComponentModel=jakarta-cdi</arg>
+                        <arg>-Amapstruct.defaultInjectionStrategy=constructor</arg>
+                        <arg>-Amapstruct.unmappedTargetPolicy=ERROR</arg>
+                        <arg>-Amapstruct.unmappedSourcePolicy=IGNORE</arg>
+                    </compilerArgs>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                        </path>
+                        <path>
+                            <groupId>org.lorislab.lib</groupId>
+                            <artifactId>lorislab-sql-data-codegen</artifactId>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <configuration>
+                    <generatorName>jaxrs-spec</generatorName>
+                    <apiNameSuffix>ApiService</apiNameSuffix>
+                    <modelNameSuffix>DTO</modelNameSuffix>
+                    <generateApiTests>false</generateApiTests>
+                    <generateApiDocumentation>false</generateApiDocumentation>
+                    <generateModelTests>false</generateModelTests>
+                    <generateModelDocumentation>false</generateModelDocumentation>
+                    <generateSupportingFiles>false</generateSupportingFiles>
+                    <addCompileSourceRoot>true</addCompileSourceRoot>
+                    <library>quarkus</library>
+                    <configOptions>
+                        <returnJBossResponse>true</returnJBossResponse>
+                        <useMutiny>true</useMutiny>
+                        <supportAsync>true</supportAsync>
+                        <sourceFolder>/</sourceFolder>
+                        <openApiNullable>false</openApiNullable>
+                        <useTags>true</useTags>
+                        <interfaceOnly>true</interfaceOnly>
+                        <serializableModel>true</serializableModel>
+                        <singleContentTypes>false</singleContentTypes>
+                        <dateLibrary>java8</dateLibrary>
+                        <useMicroProfileOpenAPIAnnotations>true</useMicroProfileOpenAPIAnnotations>
+                        <useJakartaEe>true</useJakartaEe>
+                        <useSwaggerAnnotations>false</useSwaggerAnnotations>
+                        <java17>true</java17>
+                    </configOptions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>v1</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/openapi/engine-v1.yaml</inputSpec>
+                            <apiPackage>gen.org.lorislab.p6.engine.rs.v1</apiPackage>
+                            <modelPackage>gen.org.lorislab.p6.engine.rs.v1.model</modelPackage>
+                            <templateResourcePath>${project.basedir}/src/main/templates/openapi</templateResourcePath>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
