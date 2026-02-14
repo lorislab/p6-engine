@@ -1,4 +1,4 @@
-package org.lorislab.p6.engine.rs.common;
+package org.lorislab.p6.common.rs;
 
 import java.io.IOException;
 
@@ -8,7 +8,6 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.Provider;
 
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.quarkus.arc.Unremovable;
@@ -19,8 +18,6 @@ import io.quarkus.arc.Unremovable;
 public class RestLogInterceptor implements ContainerRequestFilter, ContainerResponseFilter {
 
     private static final String CONTEXT = "p6-log-context";
-
-    private static final Logger log = LoggerFactory.getLogger(RestLogInterceptor.class);
 
     @Context
     ResourceInfo resourceInfo;
@@ -44,11 +41,6 @@ public class RestLogInterceptor implements ContainerRequestFilter, ContainerResp
         RestLogContext rc = (RestLogContext) requestContext.getProperty(CONTEXT);
         Response.StatusType status = responseContext.getStatusInfo();
 
-        if (rc == null) {
-            log.info("{} {} [{}s]: {}", requestContext.getMethod(), requestContext.getUriInfo().getPath(), -1,
-                    status.getStatusCode());
-            return;
-        }
         // close rest log context
         rc.close();
 

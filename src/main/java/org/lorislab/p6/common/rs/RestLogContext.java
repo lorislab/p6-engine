@@ -1,4 +1,4 @@
-package org.lorislab.p6.engine.rs.common;
+package org.lorislab.p6.common.rs;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

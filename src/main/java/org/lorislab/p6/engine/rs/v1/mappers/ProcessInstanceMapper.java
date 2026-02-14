@@ -2,8 +2,8 @@ package org.lorislab.p6.engine.rs.v1.mappers;
 
 import java.util.Map;
 
+import org.lorislab.p6.common.rs.OffsetDateTimeMapper;
 import org.lorislab.p6.engine.domain.store.model.ProcessInstance;
-import org.lorislab.p6.engine.rs.common.OffsetDateTimeMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

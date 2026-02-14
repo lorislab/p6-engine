@@ -2,10 +2,10 @@ package org.lorislab.p6.engine.rs.v1.mappers;
 
 import java.util.List;
 
+import org.lorislab.p6.common.rs.OffsetDateTimeMapper;
 import org.lorislab.p6.engine.domain.store.model.Job;
 import org.lorislab.p6.engine.domain.store.model.JobActiveCriteria;
 import org.lorislab.p6.engine.domain.store.model.JobSearchCriteria;
-import org.lorislab.p6.engine.rs.common.OffsetDateTimeMapper;
 import org.lorislab.p6.engine.rs.v1.controllers.JobRestController;
 import org.lorislab.quarkus.data.sql.Page;
 import org.lorislab.quarkus.data.sql.PageRequest;
