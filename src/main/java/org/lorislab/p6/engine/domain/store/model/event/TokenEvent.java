@@ -5,7 +5,7 @@ import java.util.*;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @RegisterForReflection
-public class TokenEvent extends Event {
+public class TokenEvent implements Event {
 
     private String elementId;
 

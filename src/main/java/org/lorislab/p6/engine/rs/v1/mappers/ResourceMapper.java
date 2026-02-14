@@ -24,13 +24,13 @@ public interface ResourceMapper {
         try {
             return Files.readAllBytes(upload.filePath());
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            throw new Error(ex);
         }
     }
 
     default List<DeploymentResource> request(List<FileUpload> resources) {
         if (resources == null) {
-            return null;
+            return List.of();
         }
         return resources.stream()
                 .map(r -> new DeploymentResource(r.name(), r.fileName(), loadContent(r))).toList();
@@ -40,4 +40,10 @@ public interface ResourceMapper {
     DeploymentResponseDTO response(String id, List<DeploymentResult> deployments);
 
     DeploymentResultDTO map(DeploymentResult result);
+
+    class Error extends RuntimeException {
+        public Error(Throwable throwable) {
+            super(throwable);
+        }
+    }
 }

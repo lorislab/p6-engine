@@ -13,7 +13,7 @@ import jakarta.ws.rs.core.Response;
 import gen.org.lorislab.p6.engine.rs.v1.model.*;
 import io.restassured.http.ContentType;
 
-public class AbstractTest {
+public abstract class AbstractTest {
 
     protected static File getBpmn2File(String name) {
         return Paths.get("src/test/resources/bpmn2/" + name).toFile();

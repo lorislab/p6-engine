@@ -66,8 +66,8 @@ public class ValueMapper {
         return readVariables(current)
                 .onItem().transformToUni(
                         input -> readVariables(variables)
-                                .onItem().transformToUni(var -> {
-                                    input.putAll(var);
+                                .onItem().transformToUni(tmp -> {
+                                    input.putAll(tmp);
                                     return writeVariables(input);
                                 }));
     }

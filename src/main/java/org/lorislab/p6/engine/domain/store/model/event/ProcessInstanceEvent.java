@@ -5,7 +5,7 @@ import java.util.Map;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @RegisterForReflection
-public class ProcessInstanceEvent extends Event {
+public class ProcessInstanceEvent implements Event {
 
     private String processInstanceId;
 

@@ -20,10 +20,10 @@ import io.restassured.http.ContentType;
 
 @QuarkusTest
 @TestHTTPEndpoint(JobRestController.class)
-public class JobRestControllerTest extends AbstractTest {
+class JobRestControllerTest extends AbstractTest {
 
     @Test
-    public void job300Job1Test() {
+    void job300Job1Test() {
 
         var tmp = deployResource("rs/v1/job/300_job_1.bpmn");
 

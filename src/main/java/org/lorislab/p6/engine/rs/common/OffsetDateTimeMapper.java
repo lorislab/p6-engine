@@ -2,7 +2,7 @@ package org.lorislab.p6.engine.rs.common;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -13,14 +13,15 @@ public class OffsetDateTimeMapper {
         if (dateTime == null) {
             return null;
         }
-        return OffsetDateTime.of(dateTime, ZoneOffset.systemDefault().getRules().getOffset(dateTime));
+
+        return OffsetDateTime.of(dateTime, ZoneId.systemDefault().getRules().getOffset(dateTime));
     }
 
     public LocalDateTime map(OffsetDateTime offsetDateTime) {
         if (offsetDateTime == null) {
             return null;
         }
-        return LocalDateTime.ofInstant(offsetDateTime.toInstant(), ZoneOffset.systemDefault());
+        return LocalDateTime.ofInstant(offsetDateTime.toInstant(), ZoneId.systemDefault());
     }
 
 }

@@ -50,4 +50,7 @@ public class UUID {
     public static String create() {
         return string(random());
     }
+
+    private UUID() {
+    }
 }

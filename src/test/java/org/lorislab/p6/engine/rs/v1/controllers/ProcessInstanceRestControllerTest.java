@@ -25,7 +25,7 @@ import io.restassured.http.ContentType;
 class ProcessInstanceRestControllerTest extends AbstractTest {
 
     @Test
-    void pi100StartEndProcessTest() throws Exception {
+    void pi100StartEndProcessTest() {
 
         var tmp = deployResource("rs/v1/pi-100-start-end.bpmn");
 

@@ -24,7 +24,7 @@ public class PgConnectOptionsProducer {
         var ads = AgroalDataSourceUtil.dataSourceIfActive(DataSourceUtil.DEFAULT_DATASOURCE_NAME).orElse(null);
         if (ads == null) {
             log.error("Missing datasource: {}", DataSourceUtil.DEFAULT_DATASOURCE_NAME);
-            throw new RuntimeException("Missing default database configuration!");
+            throw new Error("Missing default database configuration!");
         }
 
         var cfc = ads.getConfiguration().connectionPoolConfiguration().connectionFactoryConfiguration();
@@ -34,12 +34,12 @@ public class PgConnectOptionsProducer {
         var username = dsc.username().orElse(null);
         if (username == null) {
             log.error("Missing datasource {} username configuration!", DataSourceUtil.DEFAULT_DATASOURCE_NAME);
-            throw new RuntimeException("Missing default database username configuration!");
+            throw new Error("Missing default database username configuration!");
         }
         var password = dsc.password().orElse(null);
         if (password == null) {
             log.error("Missing datasource {} password configuration!", DataSourceUtil.DEFAULT_DATASOURCE_NAME);
-            throw new RuntimeException("Missing default database password configuration!");
+            throw new Error("Missing default database password configuration!");
         }
 
         log.info("PgConnectOptions [ username:{}, password:{}, url:{} ]", username, password, url);
@@ -48,5 +48,13 @@ public class PgConnectOptionsProducer {
         pgConnectOptions.setUser(username);
         pgConnectOptions.setPassword(password);
         return pgConnectOptions;
+    }
+
+    public static class Error extends RuntimeException {
+
+        public Error(String message) {
+            super(message);
+        }
+
     }
 }

@@ -2,21 +2,21 @@ package org.lorislab.p6.context;
 
 public class Context {
 
-    private static final ThreadLocal<ApplicationContext> CONTEXT = new ThreadLocal<>();
+    private static final ThreadLocal<ApplicationContext> CONTAINER = new ThreadLocal<>();
 
     private Context() {
     }
 
     public static ApplicationContext get() {
-        return CONTEXT.get();
+        return CONTAINER.get();
     }
 
     public static void set(ApplicationContext ctx) {
-        CONTEXT.set(ctx);
+        CONTAINER.set(ctx);
     }
 
     public static void close() {
-        CONTEXT.remove();
+        CONTAINER.remove();
     }
 
     public static boolean isEmpty() {
