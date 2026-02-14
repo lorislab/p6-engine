@@ -68,7 +68,7 @@ CREATE TABLE job (
     error_message VARCHAR(255),
     state VARCHAR(255),
     lock_key VARCHAR(255),
-    token_type VARCHAR(36),
+    token_type VARCHAR(32),
     token BYTEA,
     CONSTRAINT job_pkey PRIMARY KEY (id)
 );
@@ -85,8 +85,8 @@ CREATE TABLE gateway_instance (
 CREATE TABLE stream (
     id BIGSERIAL PRIMARY KEY,
     attempt_no INTEGER NOT NULL DEFAULT 0,
-    parent_id VARCHAR(36) NOT NULL,
-    type VARCHAR(36) NOT NULL,
+    parent_id VARCHAR(32) NOT NULL,
+    type VARCHAR(32) NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     value BYTEA
 );
@@ -95,7 +95,7 @@ CREATE TABLE stream (
 
 -- CREATE UNIQUE INDEX idx_stream_parent_id ON stream(parent_id);
 
---     dedup_key VARCHAR(36),
+--     dedup_key VARCHAR(32),
 -- CREATE UNIQUE INDEX IF NOT EXISTS idx_stream_dedup ON stream(dedup_key) WHERE dedup_key IS NOT NULL;
 
 -- CREATE INDEX idx_stream_created_at_brin ON stream USING BRIN (created_at);

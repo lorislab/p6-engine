@@ -26,16 +26,12 @@ public class UUID {
     }
 
     private static String string(byte[] value) {
-        byte[] h = new byte[36];
+        byte[] h = new byte[32];
         toHex(value, 0, 4, h, 0);
-        h[8] = '-';
-        toHex(value, 4, 6, h, 9);
-        h[13] = '-';
-        toHex(value, 6, 8, h, 14);
-        h[18] = '-';
-        toHex(value, 8, 10, h, 19);
-        h[23] = '-';
-        toHex(value, 10, 16, h, 24);
+        toHex(value, 4, 6, h, 8);
+        toHex(value, 6, 8, h, 12);
+        toHex(value, 8, 10, h, 16);
+        toHex(value, 10, 16, h, 20);
         return new String(h, StandardCharsets.UTF_8);
     }
 
